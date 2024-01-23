@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Michel's Weather Site!</h1>
+        <form id="weatherForm">
+            <input type="text" name="city" placeholder="Enter city name" />
+            <button type="submit" class="btn blue">Get Weather</button>
+        </form>        
+        <div id="weatherData"></div>
+    </div>        
+    <script>
+        document.getElementById('weatherForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var city = document.querySelector('input[name="city"]').value;
+            var weatherDataDiv = document.getElementById('weatherData');
+    
+            fetch(`/weather?city=${city}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        weatherDataDiv.innerHTML = data.error;
+                        weatherDataDiv.style.display = 'block'; 
+                    } else {
+                        var weatherContent = 'City: ' + data.City + '<br>' +
+                            'Temperature: ' + data.Temperature + '<br>' +
+                            'Description: ' + data.Description + '<br>' +
+                            'Humidity: ' + data.Humidity + '<br>' +
+                            'Pressure: ' + data.Pressure + '<br>' +
+                            'Wind Speed: ' + data['Wind Speed'] + '<br>' +
+                            'Cloudiness: ' + data.Cloudiness + '<br>' +
+                            'Sunrise: ' + data.Sunrise + '<br>' +
+                            'Sunset: ' + data.Sunset + '<br>' +
+                            'Visibility: ' + data.Visibility + '<br>' +
+                            'Wind Direction: ' + data['Wind Direction'] + '<br>' +
+                            'Max Temperature: ' + data['Max Temperature'] + '<br>' +
+                            'Min Temperature: ' + data['Min Temperature'] + '<br>' +
+                            'Feels Like: ' + data['Feels Like'];
+                        weatherDataDiv.innerHTML = weatherContent;
+                        weatherDataDiv.style.display = 'block'; 
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    weatherDataDiv.innerHTML = 'Unable to obtain weather data for ' + city + ', please ensure the city name is correct';
+                    weatherDataDiv.style.display = 'block';
+                });
+        });
+    </script>        
+</body>
+</html>
