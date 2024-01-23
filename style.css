@@ -10,7 +10,7 @@ html, body {
 
 body {
     width: 100%;
-    background-image: url('/static/blitz-gewitter-sturm-wetter.jpg');
+    background-image: url('blitz-gewitter-sturm-wetter.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
